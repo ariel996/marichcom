@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
+use App\Models\Partner;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class ClientController extends Controller
 {
@@ -12,7 +15,9 @@ class ClientController extends Controller
      */
     public function index()
     {
-        //
+        $partner = Partner::query()->where('user_id', Auth::user()->id)->first();
+        $clients = Client::query()->where('partner_id', $partner->id)->get();
+        return Inertia::render('Clients/Index', compact('clients'));
     }
 
     /**
@@ -20,7 +25,7 @@ class ClientController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Clients/Create');
     }
 
     /**
